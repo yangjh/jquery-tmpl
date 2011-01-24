@@ -1,0 +1,38 @@
+<!--
+This sample illustrates some basic templating features and scenarios.
+-->
+<ul id="movieList"></ul>
+		
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../../jquery.tmpl.js" type="text/javascript"></script>
+
+<script id="movieTemplate" type="text/x-jquery-tmpl">
+    <li><b>${Name}</b> (${ReleaseYear})</li>
+</script>
+
+<script type="text/javascript">
+//	$.ajax({
+//		dataType: "jsonp",
+//		url: "data.js",
+//		jsonp: "$callback",
+//		success: showMovies
+//	});
+
+	$.getJSON("data.js", null, showMovies);
+
+	
+//	: function( url, data, callback ) {
+//		return jQuery.get(url, data, callback, "json");
+//	},
+// Within the callback, use .tmpl() to render the data.
+	function showMovies( data ) {
+		alert("finished")
+		// Render the template with the "movies" data and insert
+		// the rendered HTML under the 'movieList' element
+		$( "#movieTemplate" ).tmpl( data )
+			.appendTo( "#movieList" );
+	}
+
+</script>
+
+

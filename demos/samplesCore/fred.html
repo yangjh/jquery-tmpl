@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script id="t1" type="text/template">
+	<div>binding: <span>${name}</span><span>${age}</span></div>
+</script>
+
+
+
+<script id="table" type="text/template">
+	<table>
+		<thead>
+			<tr>
+				{{tmpl(columns) "#col_cell"}}
+			</tr>
+		</thead>
+		<tbody>
+			{{tmpl(rows) "#row"}}
+		</tbody>
+	</table>
+</script>
+
+<script id="col_cell" type="text/template">
+	<th>${$data}</th>
+</script>
+
+<script id="row" type="text/template">
+	<tr>
+		{{tmpl($data) "#row_cell"}}
+	</tr>
+</script>
+
+<script id="row_cell" type="text/template">
+	<td>${$data}</td>
+</script>
+
+</body>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../../jquery.tmpl.js" type="text/javascript"></script>
+<script>
+
+	//var data = { name : "fred", age : 18 };
+	//var data;
+	//	${ stop }
+
+	//var heads = ["one", "two", "three"];
+
+	function stop() {
+		debugger;
+	}
+
+	$(function () {
+		var data = [
+			{ first_name : "fred", last_name: "yang", age : 18 },
+			{ first_name : "jeff" ,last_name: "hu", age : 16}
+		];
+
+		var columns = [];
+		var row = data[0];
+
+		for (var k in row) {
+			columns.push(k);
+		}
+
+
+
+		var rows = [];
+		
+		for (var i = 0; i< data.length; i++) {
+			var dataRow = data[i];
+			var row = [];
+
+			for (var k in dataRow) {
+				row.push(dataRow[k]);
+			}
+
+			rows.push(row);
+		}
+
+
+		var datasource = {
+			columns : columns,
+			rows : rows
+		}
+
+//		datasource = {
+//			columns : ["name", "age"],
+//			rows : [
+//				["fred", 18],
+//				["jeff", 16]
+//			]
+//		}
+
+		$("#table").tmpl(datasource).appendTo("body");
+
+	});
+</script>
+</html>
