@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 380px;
+            background-color: #f8f8f8;
+            border: 2px solid blue;
+            margin: 5px;
+        }
+
+        table td {
+            border: 1px solid blue;
+            padding: 3px;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+</head>
+<body>
+
+<script id="myTmpl" type="text/x-jquery-tmpl">
+    The following wraps and reorders some HTML content:
+    {{wrap "#tableWrapper"}}
+    <h3>One</h3>
+
+    <div>
+        First <b>content</b>
+    </div>
+    <h3>Two</h3>
+
+    <div>
+        And <em>more</em> <b>content</b>...
+    </div>
+    {{/wrap}}
+
+    And this wraps different HTML content:
+    {{wrap "#tableWrapper"}}
+    <div>
+        First <b>div</b>
+    </div>
+    <div>
+        Second <b>div</b>
+    </div>
+    <div>
+        Third <b>div</b>
+    </div>
+    <h3>first h3</h3>
+
+    <h3>second h3</h3>
+
+    <h3>third h3</h3>
+    {{/wrap}}
+</script>
+
+<script id="tableWrapper" type="text/x-jquery-tmpl">
+    <table>
+        <tbody>
+        <tr>
+            {{each $item.html("h3", true)}}
+            <td>
+                ${$value}
+            </td>
+            {{/each}}
+        </tr>
+        <tr>
+            {{each $item.html("div")}}
+            <td>
+                {{html $value}}
+            </td>
+            {{/each}}
+        </tr>
+        </tbody>
+    </table>
+</script>
+
+<div id="myWrappedView"></div>
+
+<script>
+    $("#myTmpl").tmpl()
+            .appendTo("#myWrappedView");
+</script>
+
+</body>
+</html>
