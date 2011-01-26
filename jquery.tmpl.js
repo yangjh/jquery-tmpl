@@ -482,7 +482,8 @@
 
 	function tiUpdate() {
 		var coll = this.nodes;
-		jQuery.tmpl( null, null, null, this).insertBefore( coll[0] );
+		var tmpl = jQuery.tmpl( null, null, null, this).insertBefore( coll[0] );
 		jQuery( coll ).remove();
+        return tmpl;
 	}
 })( jQuery );
