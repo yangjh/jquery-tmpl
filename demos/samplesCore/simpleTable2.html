@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        th {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<script id="t1" type="text/template">
+    <div>binding: <span>${name}</span><span>${age}</span></div>
+</script>
+
+
+<script id="table" type="text/template">
+    <table>
+        <thead>
+        <tr>
+            {{each $data[0]}}
+            <th>${$index}</th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody>
+        {{each $data}}
+        <tr>
+            {{each $value}}
+            <td>${$value}</td>
+            {{/each}}
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</script>
+
+
+</body>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../../jquery.tmpl.js" type="text/javascript"></script>
+<script>
+
+    function stop() {
+        debugger;
+    }
+    var data = [
+        [
+            { first_name : "fred", last_name: "yang", age : 18 },
+            { first_name : "jeff" ,last_name: "hu", age : 16}
+        ]
+    ];
+
+    $(function () {
+        jQuery.sortByProp = function (elems, propName, inv) {
+            //inv means inversion, if omitted means order by asc
+            //if is true means by desc
+            return elems.sort(function (a, b) {
+                var av = a[propName];
+                var bv = b[propName];
+                if (av == bv) {
+                    return 0;
+                }
+
+                if (!inv) {
+                    return (av > bv) ? 1 : -1;
+                } else {
+                    return (av > bv) ? -1 : 1;
+                }
+            });
+        }
+
+        Array.prototype.sortByProp = function (propName, inv) {
+            return jQuery.sortByProp(this, propName, inv);
+        }
+
+
+        function tableCreated(table) {
+            table.find("th").click(function () {
+                var sort = $("body").data("sort");
+                if (sort && sort.column == $(this).text()) {
+                    sort.inv = sort.inv == 1 ? 0 : 1;
+                } else {
+                    sort = {};
+                    sort.column = $(this).text();
+                    sort.inv = 0;
+                    $("body").data("sort", sort);
+                }
+
+                data[0].sortByProp(sort.column, sort.inv)
+                var tmplItem = table.tmplItem();
+                tableCreated(tmplItem.update());
+            });
+        }
+
+        tableCreated($("#table").tmpl(data).appendTo("body"));
+    });
+</script>
+</html>
